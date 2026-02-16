@@ -51,11 +51,11 @@ Response* fetch_sync(Request *req) {
         return NULL;
     }
 
-    printf("Connected succesfully!\n");
+    //printf("Connected succesfully!\n");
 
     //4. Build HTTP request
     request_len = build_http_request(req, request_buffer, sizeof(request_buffer));
-    printf("Sending request:\n%s\n", request_buffer);
+    //printf("Sending request:\n%s\n", request_buffer);
 
     //5. Send request
     if(socket_send(sock, request_buffer, request_len) < 0){
@@ -75,7 +75,7 @@ Response* fetch_sync(Request *req) {
     }
 
     response_buffer[bytes_received] = '\0';
-    printf("Received %d bytes\n", bytes_received);
+    //printf("Received %d bytes\n", bytes_received);
 
     //7. Parse response
     if(!parse_http_response(response_buffer, resp)){
