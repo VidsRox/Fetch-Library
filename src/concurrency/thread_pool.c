@@ -7,8 +7,8 @@ void* worker_thread(void* arg){
     ThreadPool* pool = (ThreadPool*)arg;
 
     while(pool->shutdown == 0 || task_queue_size(&pool->queue)){
-        Task* task = task_queue_dequeue(&pool->queue);
-        task->function(task->arg);
+        Task* task = task_queue_dequeue(&pool->queue);//lock acquired and released inside here
+        task->function(task->arg);//fetch worker runs here, no lock held
         free(task);
     }
 

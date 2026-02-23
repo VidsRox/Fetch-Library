@@ -23,24 +23,24 @@ void task_queue_enqueue(TaskQueue* q, Task* task){
         return;
     }
 
-    q->tasks[q->tail] = task;
+    q->tasks[q->tail] = task;              //critical section starts
     q->tail = (q->tail + 1) % q->capacity;
-    q->size++;
+    q->size++;                             //critical section ends
 
     pthread_cond_signal(&q->not_empty);
     pthread_mutex_unlock(&q->lock);
 }
 
 Task* task_queue_dequeue(TaskQueue* q){
-    pthread_mutex_lock(&q->lock);
+    pthread_mutex_lock(&q->lock);                
 
     while(q->size == 0){
         pthread_cond_wait(&q->not_empty, &q->lock);
     }
 
-    Task* task = q->tasks[q->head];
+    Task* task = q->tasks[q->head];         //critical section starts
     q->head = (q->head + 1) % q->capacity;
-    q->size--;
+    q->size--;                              //critical section ends
 
     pthread_mutex_unlock(&q->lock);
     return task;
